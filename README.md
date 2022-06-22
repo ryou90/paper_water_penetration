@@ -47,11 +47,11 @@ poetry run main.py
 ---
 
 ## Authors
-Anne-Marie Kröher <Amkroeher@gmail.com><br />
-Luisa Schueller <Luisa.schueller@gmx.de><br />
-Peter Krutzke <Krutzkepeter@gmail.com><br />
+Anne-Marie Kröher<br />
+Luisa Schueller<br />
+Peter Krutzke<br />
 
-Coding support by Robert Unger <r.unger@online.de>
+Coding support by Robert Unger
 
 
 ## License
