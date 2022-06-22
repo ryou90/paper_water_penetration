@@ -46,5 +46,13 @@ poetry run main.py
 
 ---
 
+## Authors
+Anne-Marie Kröher <Amkroeher@gmail.com><br />
+Luisa Schueller <Luisa.schueller@gmx.de><br />
+Peter Krutzke <Krutzkepeter@gmail.com><br />
+
+Coding support by Robert Unger <r.unger@online.de>
+
+
 ## License
 This repository is released under the terms of the MIT license. Full details in LICENSE file.

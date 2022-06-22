@@ -2,7 +2,8 @@
 name = "paper_water_penetration"
 version = "0.1.0"
 description = "Code for measuring the penetration behavior of water through paper"
-authors = ["Ryou90 <r.unger@online.de>"]
+authors = ["Anne-Marie Kröher <Amkroeher@gmail.com>","Luisa Schueller <Luisa.schueller@gmx.de>", "Peter Krutzke <Krutzkepeter@gmail.com>", "Robert Unger <r.unger@online.de>"]
+maintainers = ["Robert Unger <r.unger@online.de>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
@@ -17,3 +18,6 @@ black = "^22.3.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+main = "src:main"
