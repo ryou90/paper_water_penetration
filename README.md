@@ -1,6 +1,8 @@
 # Paper-Water-Penetration
 Code for measuring the penetration behavior of water through paper.
 
+For visualization we use jupiter notebook.
+
 ## Requirements
 Python >=3.9<br>
 Poetry
