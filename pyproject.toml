@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "paper_water_penetration"
+version = "0.1.0"
+description = "Code for measuring the penetration behavior of water through paper"
+authors = ["Ryou90 <r.unger@online.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+scipy = "^1.8.1"
+numpy = "^1.22.4"
+opencv-python = "^4.6.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
