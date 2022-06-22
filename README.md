@@ -1,18 +1,13 @@
 # Paper-Water-Penetration
 Code for measuring the penetration behavior of water through paper.
 
----
-
 ## Requirements
 Python >=3.9<br>
 Poetry
 
----
-
 ## Download
 Download zip and extract files or simply use git clone.
 
----
 
 ## Install
 This python repository use [poetry](https://python-poetry.org/) for dependency management and packaging.
@@ -36,7 +31,6 @@ Execute the following command.
 poetry install
 ```
 
----
 ### 3. Run
 Run the code by executing
 
