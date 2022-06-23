@@ -22,14 +22,13 @@ class Capture:
     def __init__(
         self,
         intervals: List[Tuple[int, int]] = [(1000, 100)],
-        filename: Optional[str] = None,
-        path: Optional[str] = None,
         image_handler: Images = Images(),
     ) -> None:
         """
         Configure instance
 
         interval: List of Tuple(capture duration, break between two images)
+        image_handler: Handler for image operations, can be customised
         """
         self.intervals = intervals
         self.images = image_handler

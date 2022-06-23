@@ -1,6 +1,6 @@
 import pathlib
 from os.path import join
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Iterator, List, Optional
 
 import cv2 as cv
 
@@ -41,12 +41,16 @@ class Images:
         """Return cached list from last operation"""
         return self._images
 
-    def batch_read(self) -> List[Any]:
-        self._images = []
+    def _batch_generator(self) -> Iterator[Any]:
         for child in pathlib.Path(self.path).rglob("*%s" % self.file_ending):
             if child.is_file() and child.name.startswith(self.filename):
-                # Read image
-                self._images.append(cv.imread(str(child)))
+                yield child
+
+    def batch_read(self) -> List[Any]:
+        self._images = []
+        for child in self._batch_generator():
+            # Read image
+            self._images.append(cv.imread(str(child)))
 
         return self._images
 
@@ -60,32 +64,38 @@ class Images:
         name: str
         self._images = []
 
-        for child in pathlib.Path(self.path).rglob("*%s" % self.file_ending):
-            if child.is_file() and child.name.startswith(self.filename):
-                # Read image
-                file = cv.imread(str(child))
-                # if replace image with converted image
-                if replace:
-                    # convert and replace image data
-                    name = child.name
-                else:
-                    # create new name from child
-                    name = join(
-                        self.path,
-                        child.name.replace(self.file_ending, ""),
-                        transform_suffix,
-                        self.file_ending,
-                    )
+        for child in self._batch_generator():
+            # Read image
+            file = cv.imread(str(child))
+            # if replace image with converted image
+            if replace:
+                # convert and replace image data
+                name = child.name
+            else:
+                # create new name from child
+                name = join(
+                    self.path,
+                    child.name.replace(self.file_ending, ""),
+                    transform_suffix,
+                    self.file_ending,
+                )
 
-                    # Call transformer function
-                    file = transformer_fn(file)
-                    # Add transformed image to list
-                    self._images.append(file)
-                    # save image
-                    self.save(file, name)
+                # Call transformer function
+                file = transformer_fn(file)
+                # Add transformed image to list
+                self._images.append(file)
+                # save image
+                self.save(file, name)
 
         # return list
         return self._images
+
+    def batch_process(
+        self,
+        batch_fn: Callable,
+    ) -> None:
+        for child in self._batch_generator():
+            batch_fn(child)
 
     def save(self, image: Any, name: str) -> None:
         """Save frame as image with name"""
