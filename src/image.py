@@ -14,7 +14,7 @@ def create_path(path: str) -> None:
 
 
 class Images:
-    filename: str = "DVM22_Penetration_"
+    default_filename: str = "DVM22_Penetration_"
     file_ending: str = ".jpg"
 
     def __init__(
@@ -26,15 +26,31 @@ class Images:
         Configure instance
         """
 
-        if filename:
-            self.filename = filename
-
-        self.path: str = path if path else get_current_path()
-        create_path(self.path)
-
-        self.fullname = pathlib.Path(self.path, self.filename)
-
+        self.filename = filename if filename else self.default_filename
+        self.path = path if path else get_current_path()
         self._images: List[Any] = []
+
+    @property
+    def path(self) -> str:
+        """Return path"""
+        return self._path
+
+    @path.setter
+    def path(self, value: str) -> None:
+        self._path = value
+        create_path(self._path)
+
+        self.pathname = pathlib.Path(self._path, self.filename)
+
+    @property
+    def filename(self) -> str:
+        """Return filename"""
+        return self._filename
+
+    @filename.setter
+    def filename(self, value: str) -> None:
+        self._filename = value
+        self.pathname = pathlib.Path(self.path, self._filename)
 
     @property
     def images(self) -> List[Any]:
@@ -47,6 +63,7 @@ class Images:
                 yield child
 
     def batch_read(self) -> List[Any]:
+        """Reads all images from path"""
         self._images = []
         for child in self._batch_generator():
             # Read image
@@ -60,6 +77,10 @@ class Images:
         replace: bool = False,
         transform_suffix: str = "_transform",
     ) -> List[Any]:
+        """
+        Executes transformer function to all images from path.
+        Save transformed images.
+        """
         file: Any
         name: str
         self._images = []
@@ -94,6 +115,7 @@ class Images:
         self,
         batch_fn: Callable,
     ) -> None:
+        """Simply executes function to all images from path"""
         for child in self._batch_generator():
             batch_fn(child)
 

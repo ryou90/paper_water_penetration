@@ -16,13 +16,12 @@ class Capture:
     This class collects all functions for capturing and converting of images.
     """
 
-    filename: str = "DVM22_Penetration_"
-    file_ending: str = ".jpg"
-
     def __init__(
         self,
         intervals: List[Tuple[int, int]] = [(1000, 100)],
         image_handler: Images = Images(),
+        filename: Optional[str] = None,
+        path: Optional[str] = None,
     ) -> None:
         """
         Configure instance
@@ -32,6 +31,14 @@ class Capture:
         """
         self.intervals = intervals
         self.images = image_handler
+
+        # Set custom filename
+        if filename:
+            self.images.filename = filename
+
+        # Set custom path
+        if path:
+            self.images.path = path
 
     def run_capture(self, convert: bool = False) -> None:
         """Run caputering and image creating process"""
@@ -58,7 +65,7 @@ class Capture:
                     if ret:
                         # Create name
                         name: str = "%s%d%s" % (
-                            self.images.fullname,
+                            self.images.pathname,
                             image_count,
                             self.images.file_ending,
                         )
