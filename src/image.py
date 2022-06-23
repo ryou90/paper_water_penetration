@@ -1,8 +1,9 @@
 import pathlib
-
 from os.path import join
 from typing import Any, Callable, List, Optional
+
 import cv2 as cv
+
 
 def get_current_path() -> str:
     return str(pathlib.Path(__file__).parent.absolute())
@@ -10,6 +11,7 @@ def get_current_path() -> str:
 
 def create_path(path: str) -> None:
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
 
 class Images:
     filename: str = "DVM22_Penetration_"
@@ -32,7 +34,7 @@ class Images:
 
         self.fullname = pathlib.Path(self.path, self.filename)
 
-        self._images : List[Any] = []
+        self._images: List[Any] = []
 
     @property
     def images(self) -> List[Any]:
@@ -48,7 +50,12 @@ class Images:
 
         return self._images
 
-    def batch_transform(self, transformer_fn: Callable, replace: bool = False, transform_suffix : str = "_transform") -> List[Any]:
+    def batch_transform(
+        self,
+        transformer_fn: Callable,
+        replace: bool = False,
+        transform_suffix: str = "_transform",
+    ) -> List[Any]:
         file: Any
         name: str
         self._images = []
@@ -79,7 +86,6 @@ class Images:
 
         # return list
         return self._images
-
 
     def save(self, image: Any, name: str) -> None:
         """Save frame as image with name"""
