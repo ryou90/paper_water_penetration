@@ -4,18 +4,42 @@ from typing import Any, Callable, Iterator, List, Optional
 
 import cv2 as cv
 
+from logger import get_logger
+
+log = get_logger("image")
 
 def get_current_path() -> str:
     return str(pathlib.Path(__file__).parent.absolute())
 
 
 def create_path(path: str) -> None:
+    """Create Path if not exists"""
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
+
+def image_read(path: str) -> Any:
+    """Read color image from path in BGR 3D array"""
+    return cv.imread(path)
+
+def image_read_gray(path: str) -> Any:
+    """Read image from path as gray 2D array"""
+    return cv.imread(path, 0)
+
+def image_write(image: Any, pathname: str) -> Any:
+    """Write image to path"""
+    cv.imwrite(pathname, image)
+
+def image_to_gray(image: Any) -> Any:
+    """Convert image source to gray scale"""
+    return cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+
+def bgr_to_rgb(image: Any) -> Any:
+    return cv.cvtColor(image, cv.COLOR_BGRA2RGB)
 
 
 class Images:
     default_filename: str = "DVM22_Penetration_"
-    file_ending: str = ".jpg"
+    file_ending: str = ".png"
 
     def __init__(
         self,
@@ -25,6 +49,8 @@ class Images:
         """
         Configure instance
         """
+        self._path: str = ""
+        self._filename: str = ""
 
         self.filename = filename if filename else self.default_filename
         self.path = path if path else get_current_path()
@@ -62,18 +88,22 @@ class Images:
             if child.is_file() and child.name.startswith(self.filename):
                 yield child
 
-    def batch_read(self) -> List[Any]:
+    def batch_read(self, gray: bool = True) -> List[Any]:
         """Reads all images from path"""
         self._images = []
         for child in self._batch_generator():
-            # Read image
-            self._images.append(cv.imread(str(child)))
+            # Read images
+            if gray:
+                self._images.append(image_read_gray(str(child)))
+            else:
+                self._images.append(image_read(str(child)))
 
         return self._images
 
     def batch_transform(
         self,
         transformer_fn: Callable,
+        image_list: Optional[List[Any]] = None,
         replace: bool = False,
         transform_suffix: str = "_transform",
     ) -> List[Any]:
@@ -85,7 +115,8 @@ class Images:
         name: str
         self._images = []
 
-        for child in self._batch_generator():
+        iterator: Any = image_list if image_list else self._batch_generator()
+        for child in iterator:
             # Read image
             file = cv.imread(str(child))
             # if replace image with converted image
@@ -112,14 +143,18 @@ class Images:
         return self._images
 
     def batch_process(
-        self,
-        batch_fn: Callable,
-    ) -> None:
+        self, batch_fn: Callable, image_list: Optional[List[Any]] = None
+    ) -> List[Any]:
         """Simply executes function to all images from path"""
-        for child in self._batch_generator():
-            batch_fn(child)
+        self._images = []
+        iterator: Any = image_list if image_list else self._batch_generator()
+        for child in iterator:
+            self._images.append(batch_fn(child))
+
+        return self._images
 
     def save(self, image: Any, name: str) -> None:
         """Save frame as image with name"""
         # save image
-        cv.imwrite(name, image)
+        self._images.append(image)
+        image_write(image, name)
