@@ -133,3 +133,6 @@ dmypy.json
 .settings/*
 
 data/*
+
+#pycharm
+.idea/*
