@@ -19,16 +19,16 @@ Execute the following command based on your OS.
 
 For osx / linux / bashonwindows:
 ```
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --preview
 ```
 
 For Windows powershell:
 ```
-(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python - --preview
 ```
 
 ### 2. Setup dependencies
-Execute the following command.
+Execute the following command in the working directory.
 ```
 poetry install
 ```
