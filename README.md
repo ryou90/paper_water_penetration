@@ -43,7 +43,7 @@ python main.py
 or
 
 ```
-poetry run main.py
+poetry run main
 ```
 
 ---
