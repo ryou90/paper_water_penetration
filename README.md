@@ -14,6 +14,8 @@ Download zip and extract files or simply use git clone.
 ## Install
 This python repository use [poetry](https://python-poetry.org/) for dependency management and packaging.
 
+All the following commands must be executed in the command line.
+
 ### 1. Setup poetry
 Execute the following command based on your OS.
 
@@ -33,20 +35,34 @@ Execute the following command in the working directory.
 poetry install
 ```
 
-### 3. Run
-Run the code by executing
+After install, close and reopen commandline to append poetry install path.
+
+### 3. Run script
+Goto the working directory.
 
 ```
-python main.py
+poetry shell
+cd ./src
+python run.py
 ```
 
-or
+### 4. Run Notebook
+Install VS Code.
+Import project directory.
+Click on the notebook.ipynb
+
+OR
+
+Open commandline.
 
 ```
-poetry run main
+jupyter notebook
 ```
 
----
+[starting-the-notebook-server](https://docs.jupyter.org/en/latest/running.html#starting-the-notebook-server)
+
+Search for your project directory.
+Click on the notebook.ipynb
 
 ## Authors
 Anne-Marie Kröher<br />
