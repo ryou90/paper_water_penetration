@@ -1,3 +1,4 @@
+from math import cos, sin
 from typing import Any, List
 
 import numpy as np
@@ -35,15 +36,22 @@ def calc_radial_profile(data):
     """Calculate Radial Profile"""
     (h, w) = data.shape[:2]
     center = (w // 2, h // 2)
+    # x, y for
     y, x = np.indices((data.shape))
+    # create radius steps and reverse order
+    radius = np.arange(0,x.max()/2,2)[::-1]
 
-    r = np.sqrt((x - center[0]) ** 2 + (y - center[1]) ** 2)
-    r = r.astype(np.int_)
+    rad = np.radians(np.arange(90))
+    # x = math.cos(xr)
+    # y = math.sin(xr)
+    profile = []
+    for r in radius:
+        xy = np.around(r *np.array([[sin(xr), cos(xr)] for xr in rad])).astype(int)
+        # Get circle data values and calc mean
+        profile.append(np.array([data[coord[0], coord[1]] for coord in xy]).mean())
 
-    tbin = np.bincount(r.ravel(), data.ravel())
-    nr = np.bincount(r.ravel())
-    radialprofile = tbin / nr
-    return radialprofile
+    # Convert back to numpy array
+    return np.asarray(profile)
 
 
 def batch_calc_radial_profile(image_list: List[Any]) -> List[Any]:

@@ -5,14 +5,17 @@ description = "Code for measuring the penetration behavior of water through pape
 authors = ["Anne-Marie Kröher <Amkroeher@gmail.com>","Luisa Schueller <Luisa.schueller@gmx.de>", "Peter Krutzke <Krutzkepeter@gmail.com>", "Robert Unger <r.unger@online.de>"]
 maintainers = ["Robert Unger <r.unger@online.de>"]
 license = "MIT"
+packages = [
+    {include="paper_water_penetration", from="src"},
+]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
 scipy = "^1.8.1"
-numpy = "^1.22.4"
 opencv-python = "^4.6.0"
 notebook = "^6.4.12"
 seaborn = "^0.11.2"
+numpy = "^1.23.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -23,4 +26,5 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.scripts]
-script = "src.run:start"
+script = "run:start"
+capture = "run:capture"
