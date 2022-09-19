@@ -3,8 +3,7 @@ from typing import Any, Callable, Iterator, List, Optional
 
 import cv2 as cv
 
-import image
-from logger import get_logger
+from paper_water_penetration.logger import get_logger
 
 log = get_logger("batch_process")
 
@@ -16,6 +15,7 @@ def _batch_generator(path: str, pattern: str) -> Iterator[Any]:
 
 def batch_read(path: str, pattern: str, gray: bool = True) -> List[Any]:
     """Reads all images from path"""
+    from . import image
     images: List[Any] = []
     for child in _batch_generator(path, pattern):
         # Read images
@@ -34,6 +34,7 @@ def batch_write(
     file_ending: str = ".png",
     gray: bool = True,
 ) -> None:
+    from . import image
 
     count = 0
     if suffix == "" and gray:
@@ -59,7 +60,7 @@ def batch_transform_from_path(
     pattern: str,
     gray: bool = False,
 ) -> List[Any]:
-
+    from . import image
     file: Any
     images = []
 

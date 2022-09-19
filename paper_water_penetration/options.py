@@ -13,6 +13,7 @@ class Options:
     data_path: str = f"{BASE_DIR}/data/{TODAY}/"
     filename: str = "DVM22_Penetration"
     file_ending: str = ".png"
+    wait_for_key: bool = False
     write_capture: bool = True
     write_convertToGray: bool = False
     write_fft2_transform: bool = True

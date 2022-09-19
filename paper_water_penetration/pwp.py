@@ -1,16 +1,13 @@
 from typing import Any, Callable, List, Optional
 
-
-import image
-import plot
-import calc
-from cache import Cache
-from capture import capture
-from logger import get_logger
-from options import Options
+from paper_water_penetration import calc, image, plot
+from paper_water_penetration.cache import Cache
+from paper_water_penetration.capture import capture
+from paper_water_penetration.logger import get_logger, logging
+from paper_water_penetration.options import Options
 
 log = get_logger("PaperWaterPenetration")
-
+log.setLevel(logging.INFO)
 
 class PaperWaterPenetration:
 
@@ -59,7 +56,7 @@ class PaperWaterPenetration:
         self,
         data: List[Any],
         suffix: str = "",
-        batch_fn: Callable = plot.batch_write_plots,
+        batch_fn: Callable = plot.write_plot,
     ) -> None:
         plot.batch_write_plots(
             batch_fn=batch_fn,
@@ -77,18 +74,25 @@ class PaperWaterPenetration:
         pip = custom_pipeline if custom_pipeline else self.default_pipeline
 
         result: Any = None
+
+        current : int  = 1
+        total : int = len(pip)
+        log.info(f"# Total process steps: {total}")
         for fn in pip:
             try:
+                log.info(f"# Start pipeline process {current}/{total}: {fn.__name__.upper()}")
                 result = fn(result, *args, **kwargs)
+                log.info(f"# Finish pipeline process: {fn.__name__.upper()}")
             except Exception as err:
                 print(f"Error in executing pipeline: {err}")
+            current += 1
 
         return True
 
     def capture(self, *args, **kwargs) -> List[Any]:
         """Start capturing and return list if captured images."""
         self.cache["pre_capture"] = capture(
-            self.options.intervals, self.options.resolution
+            self.options.intervals, self.options.resolution, self.options.wait_for_key
         )
         self.cache["capture"] = image.batch_resize(
             self.cache["pre_capture"], new_size=self.options.resize
@@ -96,6 +100,7 @@ class PaperWaterPenetration:
 
         # Write images to disk if enabled
         if self.options.write_capture:
+            log.info("Write images to store...")
             self.batch_write_images(self.cache["capture"])
 
         return self.cache["capture"]
@@ -126,6 +131,7 @@ class PaperWaterPenetration:
 
         # Write images to disk if enabled
         if self.options.write_fft2_transform:
+            log.info("Write images to store...")
             self.batch_write_images(
                 self.cache["fft2_transform"], suffix="_fft2_transform"
             )
@@ -160,27 +166,9 @@ class PaperWaterPenetration:
 
         # Write images to disk if enabled
         if self.options.write_radial_transform:
+            log.info("Write images to store...")
             self.batch_write_plots(
                 self.cache["radial_transform"], "_radial_transform_plot"
-            )
-
-        return self.cache["radial_transform"]
-
-    def curve_fitting(
-        self, data: Optional[List[Any]] = None, *args, **kwargs
-    ) -> List[Any]:
-        """Calculate fitting curve from data points."""
-        if not data:
-            data = self.cache["radial_transform"]
-
-        self.cache["curve_fitting"] = calc.batch_calc_curve_fitting(data)
-
-        # Write images to disk if enabled
-        if self.options.write_curve_fitting:
-            self.batch_write_plots(
-                list(zip(self.cache["radial_transform"], self.cache["curve_fitting"])),
-                "_curve_fit_plot",
-                batch_fn=plot.write_curve_fit,
             )
 
         return self.cache["radial_transform"]

@@ -5,8 +5,8 @@ from typing import Any, Callable, List, Optional
 import cv2 as cv
 import numpy as np
 
-from batch_process import batch_read, batch_transform, batch_write
-from logger import get_logger
+from paper_water_penetration.batch_process import batch_read, batch_transform, batch_write
+from paper_water_penetration.logger import get_logger
 
 log = get_logger("image")
 

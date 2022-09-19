@@ -1,9 +1,15 @@
-import matplotlib.pyplot as plt
-import image
 from typing import Any, Callable, List
+
+import matplotlib.pyplot as plt
+
+from paper_water_penetration import image
+
 
 def write_plot(data, pathname) -> None:
     plt.plot(data)
+    plt.title('1D Power Spectrum')
+    plt.xlabel('Frequenz (Radius)')
+    plt.ylabel('Amplitude')
     plt.savefig(pathname)
     plt.close()
 

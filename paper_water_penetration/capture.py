@@ -3,10 +3,10 @@ from typing import Any, List, Tuple
 
 import cv2 as cv
 
-from logger import get_logger
+from paper_water_penetration.logger import get_logger, logging
 
 log = get_logger("capture")
-
+log.setLevel(logging.INFO)
 
 def current_milli_time() -> int:
     return int(round(time.time() * 1000))
@@ -15,6 +15,7 @@ def current_milli_time() -> int:
 def capture(
     intervals: List[Tuple[int, int]] = [(1000, 100)],
     resolution: Tuple[int, int] = (640, 480),
+    wait: bool = False
 ) -> List[Any]:
     """
     Run caputering and image creating process
@@ -46,6 +47,9 @@ def capture(
         )
     )
 
+    if wait:
+        input("Ready for capturing, press Enter to continue...")
+
     # iterate intervals
     for duration, interval in intervals:
         log.debug("Start interval: Duration: %d, interval: %d" % (duration, interval))
@@ -60,7 +64,7 @@ def capture(
             log.debug(f"{current_time_ms} {interval}")
             if current_time_ms % interval == 0:
                 ret, frame = cap.read()
-                log.debug("capture new frame")
+                log.info(f"Capture new frame: {image_count}")
                 # if image capturing is success
                 if ret:
                     image_count += 1
