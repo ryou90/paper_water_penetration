@@ -18,7 +18,7 @@ def fft2_transformer(image: Any) -> Any:
     """Shift and Fast Fourier Transformation"""
     f: Any = np.fft.fft2(image)
     fshift: Any = np.fft.fftshift(f)
-    return 20 * np.log(np.abs(fshift))
+    return np.log(np.abs(fshift))
 
 
 def batch_fft2_transform(image_list: List[Any]) -> List[Any]:
