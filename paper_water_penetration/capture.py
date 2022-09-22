@@ -33,6 +33,10 @@ def capture(
     images: List[Any] = []
     # start camera
     cap: Any = cv.VideoCapture(0)
+    if not (cap.isOpened()):
+        log.error("Camera not started")
+        raise Exception("")
+
     log.debug("Camera started")
 
     # Set new resolution

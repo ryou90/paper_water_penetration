@@ -19,7 +19,7 @@ class Options:
     write_fft2_transform: bool = True
     use_jet_colormap : bool = True
     write_radial_transform: bool = True
-    intervals: List[Tuple[int, int]] = field(default_factory=lambda: [(1000, 100)])
+    intervals: List[Tuple[int, int]] = field(default_factory=lambda: [(3000, 300)])
     """
         Camera Options - must be higher than resize size
         width x height
