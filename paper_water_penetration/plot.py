@@ -7,7 +7,7 @@ from paper_water_penetration import image
 
 def write_plot(data, pathname) -> None:
     plt.plot(data)
-    plt.title('1D Power Spectrum')
+    plt.title('1D Power Spektrum')
     plt.xlabel('Frequenz (Radius)')
     plt.ylabel('Amplitude')
     plt.savefig(pathname)
